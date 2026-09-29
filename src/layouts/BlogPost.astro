@@ -8,12 +8,45 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category } = Astro.props;
+
+const categoryLabels: Record<string, string> = {
+	operativos: 'Operativos',
+	incautaciones: 'Incautaciones',
+	sometimientos: 'Sometimientos',
+	bajas: 'Bajas',
+};
+
+const siteUrl = Astro.url.origin;
+const pageUrl = Astro.url.href;
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'NewsArticle',
+	headline: title,
+	description: description,
+	datePublished: pubDate.toISOString(),
+	dateModified: (updatedDate ?? pubDate).toISOString(),
+	author: {
+		'@type': 'Organization',
+		name: 'Colombia Force',
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'Colombia Force',
+	},
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': pageUrl,
+	},
+	url: pageUrl,
+};
 ---
 
-<html lang="en">
+<html lang="es">
 	<head>
 		<BaseHead title={title} description={description} />
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -52,6 +85,18 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			.category-badge {
+				display: inline-block;
+				margin-bottom: 0.5em;
+				padding: 0.25em 0.9em;
+				border-radius: 999px;
+				background: #1e3a8a;
+				color: white;
+				font-size: 0.8em;
+				font-weight: 600;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
 		</style>
 	</head>
 
@@ -64,12 +109,13 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				</div>
 				<div class="prose">
 					<div class="title">
+						{category && <div class="category-badge">{categoryLabels[category] ?? category}</div>}
 						<div class="date">
 							<FormattedDate date={pubDate} />
 							{
 								updatedDate && (
 									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
+										Actualizado el <FormattedDate date={updatedDate} />
 									</div>
 								)
 							}
