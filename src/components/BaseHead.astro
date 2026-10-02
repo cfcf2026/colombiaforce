@@ -37,6 +37,11 @@ const { title, description, image = FallbackImage } = Astro.props;
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
+<!-- Hreflang: version en español y en inglés de esta misma página -->
+<link rel="alternate" hreflang="es" href={new URL(Astro.url.pathname.replace(/^\/en\//, '/es/'), Astro.site)} />
+<link rel="alternate" hreflang="en" href={new URL(Astro.url.pathname.replace(/^\/es\//, '/en/'), Astro.site)} />
+<link rel="alternate" hreflang="x-default" href={new URL(Astro.url.pathname.replace(/^\/en\//, '/es/'), Astro.site)} />
+
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="description" content={description} />

@@ -1,0 +1,217 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const SITE_DESCRIPTION_EN =
+	'Daily summary of operations, seizures, and results of the offensive against crime in Colombia, based on official sources.';
+
+const posts = (await getCollection('blog', ({ id }) => id.startsWith('en/')))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 6);
+
+const categories = [
+	{ slug: 'operativos', label: 'Operations' },
+	{ slug: 'incautaciones', label: 'Seizures' },
+	{ slug: 'sometimientos', label: 'Surrenders' },
+	{ slug: 'bajas', label: 'Casualties' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION_EN} />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+		<style>
+			.intro {
+				max-width: 720px;
+				margin: 0 auto 1.5rem;
+				text-align: center;
+			}
+			.categories {
+				display: flex;
+				justify-content: center;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+				margin-bottom: 2.5rem;
+			}
+			.categories a {
+				padding: 0.4em 1em;
+				border-radius: 999px;
+				background: #f1f1f1;
+				color: rgb(var(--black));
+				text-decoration: none;
+				font-size: 0.9em;
+				font-weight: 600;
+			}
+			.map-section {
+				display: flex;
+				gap: 1.5rem;
+				flex-wrap: wrap;
+				margin-bottom: 3rem;
+			}
+			#colombia-map {
+				flex: 1 1 500px;
+				height: 480px;
+				border-radius: 12px;
+				background: #eef2f7;
+			}
+			#map-panel {
+				flex: 1 1 260px;
+				padding: 1.5rem;
+				border-radius: 12px;
+				background: #f8f9fa;
+			}
+			#map-panel h3 {
+				margin-top: 0;
+			}
+			#map-panel .stat-row {
+				display: flex;
+				justify-content: space-between;
+				padding: 0.4em 0;
+				border-bottom: 1px solid #e2e2e2;
+			}
+			#map-panel .hint {
+				color: rgb(var(--gray));
+				font-size: 0.9em;
+			}
+			.recent h2 {
+				margin-bottom: 1rem;
+			}
+			.recent ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+				gap: 1.5rem;
+			}
+			.recent li a {
+				display: block;
+				text-decoration: none;
+				color: rgb(var(--black));
+			}
+			.recent .date {
+				color: rgb(var(--gray));
+				font-size: 0.85em;
+			}
+			@media (max-width: 720px) {
+				#colombia-map {
+					height: 360px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="intro">
+				<h1>{SITE_TITLE}</h1>
+				<p>{SITE_DESCRIPTION_EN}</p>
+			</div>
+
+			<div class="categories">
+				{categories.map((c) => <a href={`/en/categoria/${c.slug}`}>{c.label}</a>)}
+			</div>
+
+			<section class="map-section">
+				<div id="colombia-map"></div>
+				<div id="map-panel">
+					<h3 id="map-panel-title">Hover over a department</h3>
+					<div class="stat-row"><span>Operations</span><span id="stat-operativos">—</span></div>
+					<div class="stat-row"><span>Seizures</span><span id="stat-incautaciones">—</span></div>
+					<div class="stat-row"><span>Surrenders</span><span id="stat-sometimientos">—</span></div>
+					<div class="stat-row"><span>Casualties</span><span id="stat-bajas">—</span></div>
+					<p class="hint">Sample figures. Will connect to real data from each article soon.</p>
+				</div>
+			</section>
+
+			<section class="recent">
+				<h2>Latest news</h2>
+				<ul>
+					{
+						posts.map((post) => (
+							<li>
+								<a href={`/en/blog/${post.id.replace(/^en\//, '')}/`}>
+									<h4>{post.data.title}</h4>
+									<p class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+		</main>
+		<Footer />
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+		<script>
+			const statsData: Record<string, { operativos: number; incautaciones: number; sometimientos: number; bajas: number }> = {};
+
+			function getStats(name: string) {
+				return statsData[name] ?? { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
+			}
+
+			document.addEventListener('DOMContentLoaded', async () => {
+				// @ts-ignore
+				const map = L.map('colombia-map', {
+					zoomControl: true,
+					scrollWheelZoom: false,
+				}).setView([4.5, -74.3], 5);
+
+				// @ts-ignore
+				L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+					attribution: '&copy; OpenStreetMap &copy; CARTO',
+					maxZoom: 10,
+				}).addTo(map);
+
+				const panelTitle = document.getElementById('map-panel-title');
+				const statOperativos = document.getElementById('stat-operativos');
+				const statIncautaciones = document.getElementById('stat-incautaciones');
+				const statSometimientos = document.getElementById('stat-sometimientos');
+				const statBajas = document.getElementById('stat-bajas');
+
+				try {
+					const res = await fetch('/data/colombia.geo.json');
+					const geojson = await res.json();
+
+					// @ts-ignore
+					const layer = L.geoJSON(geojson, {
+						style: {
+							color: '#1e3a8a',
+							weight: 1,
+							fillColor: '#93c5fd',
+							fillOpacity: 0.5,
+						},
+						onEachFeature: (feature: any, lyr: any) => {
+							const name = feature.properties.NOMBRE_DPT;
+							lyr.on('mouseover', () => {
+								lyr.setStyle({ fillColor: '#1e3a8a', fillOpacity: 0.8 });
+								const s = getStats(name);
+								if (panelTitle) panelTitle.textContent = name;
+								if (statOperativos) statOperativos.textContent = String(s.operativos);
+								if (statIncautaciones) statIncautaciones.textContent = String(s.incautaciones);
+								if (statSometimientos) statSometimientos.textContent = String(s.sometimientos);
+								if (statBajas) statBajas.textContent = String(s.bajas);
+							});
+							lyr.on('mouseout', () => {
+								lyr.setStyle({ fillColor: '#93c5fd', fillOpacity: 0.5 });
+							});
+						},
+					}).addTo(map);
+
+					map.fitBounds(layer.getBounds());
+				} catch (err) {
+					console.error('Could not load department map', err);
+					if (panelTitle) panelTitle.textContent = 'Map failed to load';
+				}
+			});
+		</script>
+	</body>
+</html>
