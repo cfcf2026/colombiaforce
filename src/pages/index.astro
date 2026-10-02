@@ -1,3 +1,12 @@
 ---
-return Astro.redirect('/es/');
+// Esta pagina no se usa directamente: Cloudflare redirige "/" a "/es/" con una regla.
+// La dejamos simple por si alguien la ve antes de que la regla se aplique.
 ---
+<html>
+	<head>
+		<meta http-equiv="refresh" content="0; url=/es/" />
+	</head>
+	<body>
+		<p>Redirigiendo a <a href="/es/">/es/</a>...</p>
+	</body>
+</html>
