@@ -4,36 +4,27 @@ backend:
   branch: main
   base_url: https://sveltia-cms-auth.colombiaforce2026.workers.dev
 
-site_url: https://colombiaforce.com
-display_url: https://colombiaforce.com
-
 i18n:
   structure: multiple_folders
   locales: [es, en]
   default_locale: es
 
-media_folder: "src/assets/blog-images"
-public_folder: "/src/assets/blog-images"
+media_folder: public/images
+public_folder: /images
 
 collections:
-  - name: "blog"
-    label: "Notas"
-    folder: "src/content/blog/es"
+  - name: blog
+    label: Notas
+    folder: src/content/blog
+    extension: md
+    format: frontmatter
     create: true
-    slug: "{{slug}}"
     i18n: true
+    slug: "{{slug}}"
     fields:
-      - { label: "Título", name: "title", widget: "string", i18n: true }
-      - { label: "Descripción", name: "description", widget: "text", i18n: true }
-      - { label: "Fecha de publicación", name: "pubDate", widget: "datetime", format: "MMM DD YYYY" }
-      - { label: "Fecha de actualización", name: "updatedDate", widget: "datetime", format: "MMM DD YYYY", required: false }
-      - { label: "Imagen destacada", name: "heroImage", widget: "image", required: false }
-      - label: "Categoría"
-        name: "category"
-        widget: "select"
-        options:
-          - { label: "Operativos", value: "operativos" }
-          - { label: "Incautaciones", value: "incautaciones" }
-          - { label: "Sometimientos", value: "sometimientos" }
-          - { label: "Bajas", value: "bajas" }
-      - { label: "Cuerpo", name: "body", widget: "markdown", i18n: true }
+      - { name: title, label: Título, widget: string, i18n: true }
+      - { name: description, label: Descripción, widget: text, i18n: true }
+      - { name: pubDate, label: Fecha, widget: datetime, i18n: duplicate }
+      - { name: category, label: Categoría, widget: select, i18n: duplicate,
+          options: [operativos, incautaciones, sometimientos, bajas] }
+      - { name: body, label: Cuerpo, widget: markdown, i18n: true }
