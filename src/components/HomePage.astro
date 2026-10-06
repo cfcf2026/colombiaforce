@@ -1,0 +1,392 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from './BaseHead.astro';
+import Footer from './Footer.astro';
+import FormattedDate from './FormattedDate.astro';
+import Header from './Header.astro';
+import { SITE_TITLE } from '../consts';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+	lang: 'es' | 'en';
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const copy = {
+	es: {
+		desc: 'Resumen diario de operativos, incautaciones y resultados de la ofensiva contra la criminalidad en Colombia, con base en fuentes oficiales.',
+		featured: 'Nota destacada',
+		read: 'Leer la nota',
+		seeMap: 'Ver el mapa',
+		all: 'Todas',
+		latest: 'Últimas notas',
+		empty: 'Todavía no hay notas.',
+		more: 'Pronto habrá más notas.',
+		mapTitle: 'Mapa por departamento',
+		hover: 'Pasa el mouse sobre un departamento',
+		hint: 'Cifras de ejemplo. Se conectarán a los datos reales de cada nota más adelante.',
+		mapError: 'No se pudo cargar el mapa',
+	},
+	en: {
+		desc: "Daily briefing on operations, seizures and results of Colombia's offensive against crime, based on official sources.",
+		featured: 'Featured report',
+		read: 'Read the story',
+		seeMap: 'See the map',
+		all: 'All',
+		latest: 'Latest reports',
+		empty: 'No reports yet.',
+		more: 'More reports coming soon.',
+		mapTitle: 'Map by department',
+		hover: 'Hover over a department',
+		hint: 'Sample figures. They will be connected to the real data from each report later.',
+		mapError: 'The map could not be loaded',
+	},
+}[lang];
+
+const catSlugs = ['operativos', 'incautaciones', 'sometimientos', 'bajas'];
+const catLabel: Record<string, string> = {
+	operativos: t('cat.operativos'),
+	incautaciones: t('cat.incautaciones'),
+	sometimientos: t('cat.sometimientos'),
+	bajas: t('cat.bajas'),
+};
+
+const prefix = `${lang}/`;
+const posts = (await getCollection('blog', ({ id }) => id.startsWith(prefix))).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const featured = posts[0];
+const postHref = (p: (typeof posts)[number]) => `/${lang}/blog/${p.id.replace(/^(es|en)\//, '')}/`;
+const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string] ?? '';
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<BaseHead title={SITE_TITLE} description={copy.desc} />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+	</head>
+	<body>
+		<Header />
+		<main class="wide">
+			<h1 class="sr-only">{SITE_TITLE}</h1>
+
+			<section class="hero">
+				<div class="hero-text">
+					<p class="eyebrow">{copy.featured}</p>
+					<h2>{featured ? featured.data.title : SITE_TITLE}</h2>
+					<p class="summary">{featured ? featured.data.description : copy.desc}</p>
+					<div class="actions">
+						{featured && <a class="btn primary" href={postHref(featured)}>{copy.read}</a>}
+						<a class="btn ghost" href="#mapa">{copy.seeMap}</a>
+					</div>
+				</div>
+				<div class="hero-art" aria-hidden="true">
+					<svg viewBox="0 0 340 360" width="240" height="254"><polygon points="120,20 170,10 215,40 250,35 290,70 275,110 300,150 280,200 255,250 265,300 220,330 170,310 130,330 90,290 60,240 85,200 50,170 70,120 100,80" fill="#1b2963" stroke="#ffd21a" stroke-width="2" stroke-linejoin="round"></polygon></svg>
+				</div>
+			</section>
+
+			<nav class="tabs" aria-label={copy.latest}>
+				<a class="tab active" href={`/${lang}/blog`}>{copy.all}</a>
+				{catSlugs.map((s) => <a class="tab" href={`/${lang}/categoria/${s}`}>{catLabel[s]}</a>)}
+			</nav>
+
+			{
+				posts.length > 1 ? (
+					<section class="grid">
+						{posts.slice(1, 9).map((p) => (
+							<a class="card" href={postHref(p)}>
+								<div class="thumb"><span>{label(p)}</span></div>
+								<div class="body">
+									<p class="meta">{label(p)} · <FormattedDate date={p.data.pubDate} /></p>
+									<h3>{p.data.title}</h3>
+								</div>
+							</a>
+						))}
+					</section>
+				) : (
+					<p class="muted">{posts.length ? copy.more : copy.empty}</p>
+				)
+			}
+
+			<section id="mapa" class="map-section">
+				<h2 class="section-title">{copy.mapTitle}</h2>
+				<div class="map-wrap">
+					<div id="colombia-map" data-error={copy.mapError}></div>
+					<div id="map-panel">
+						<h3 id="map-panel-title">{copy.hover}</h3>
+						<div class="stat-row"><span>{catLabel.operativos}</span><b id="stat-operativos">—</b></div>
+						<div class="stat-row"><span>{catLabel.incautaciones}</span><b id="stat-incautaciones">—</b></div>
+						<div class="stat-row"><span>{catLabel.sometimientos}</span><b id="stat-sometimientos">—</b></div>
+						<div class="stat-row"><span>{catLabel.bajas}</span><b id="stat-bajas">—</b></div>
+						<p class="hint">{copy.hint}</p>
+					</div>
+				</div>
+			</section>
+		</main>
+		<Footer />
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" is:inline></script>
+		<script>
+			// Datos de ejemplo por departamento. Reemplazar con datos reales más adelante.
+			const statsData: Record<string, { operativos: number; incautaciones: number; sometimientos: number; bajas: number }> = {};
+
+			function getStats(name: string) {
+				return statsData[name] ?? { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
+			}
+
+			document.addEventListener('DOMContentLoaded', async () => {
+				const mapEl = document.getElementById('colombia-map');
+				// @ts-ignore - L viene del script de Leaflet cargado por CDN
+				const map = L.map('colombia-map', { zoomControl: true, scrollWheelZoom: false }).setView([4.5, -74.3], 5);
+
+				// @ts-ignore
+				L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+					attribution: '&copy; OpenStreetMap &copy; CARTO',
+					maxZoom: 10,
+				}).addTo(map);
+
+				const panelTitle = document.getElementById('map-panel-title');
+				const statOperativos = document.getElementById('stat-operativos');
+				const statIncautaciones = document.getElementById('stat-incautaciones');
+				const statSometimientos = document.getElementById('stat-sometimientos');
+				const statBajas = document.getElementById('stat-bajas');
+
+				const base = { color: '#ffd21a', weight: 1, fillColor: '#1b2963', fillOpacity: 0.65 };
+
+				try {
+					const res = await fetch('/data/colombia.geo.json');
+					const geojson = await res.json();
+
+					// @ts-ignore
+					const layer = L.geoJSON(geojson, {
+						style: base,
+						onEachFeature: (feature: any, lyr: any) => {
+							const name = feature.properties.NOMBRE_DPT;
+							lyr.on('mouseover', () => {
+								lyr.setStyle({ fillColor: '#ffd21a', fillOpacity: 0.55 });
+								const s = getStats(name);
+								if (panelTitle) panelTitle.textContent = name;
+								if (statOperativos) statOperativos.textContent = String(s.operativos);
+								if (statIncautaciones) statIncautaciones.textContent = String(s.incautaciones);
+								if (statSometimientos) statSometimientos.textContent = String(s.sometimientos);
+								if (statBajas) statBajas.textContent = String(s.bajas);
+							});
+							lyr.on('mouseout', () => lyr.setStyle(base));
+						},
+					}).addTo(map);
+
+					map.fitBounds(layer.getBounds());
+				} catch (err) {
+					console.error('No se pudo cargar el mapa de departamentos', err);
+					if (panelTitle) panelTitle.textContent = mapEl?.dataset.error ?? '';
+				}
+			});
+		</script>
+	</body>
+</html>
+
+<style>
+	.hero {
+		display: grid;
+		grid-template-columns: 1.1fr 1fr;
+		gap: 2.5rem;
+		align-items: center;
+		padding: 2.5rem 0 3rem;
+	}
+	.eyebrow {
+		color: var(--accent);
+		font-weight: 700;
+		font-size: 0.8rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		margin: 0 0 0.8rem;
+	}
+	.hero h2 {
+		font-size: clamp(2.6rem, 6vw, 4.6rem);
+		line-height: 0.98;
+		text-transform: uppercase;
+		margin-bottom: 1rem;
+	}
+	.summary {
+		font-size: 1.15rem;
+		margin-bottom: 1.6rem;
+	}
+	.actions {
+		display: flex;
+		gap: 0.8rem;
+		flex-wrap: wrap;
+	}
+	.btn {
+		display: inline-block;
+		padding: 0.8rem 1.4rem;
+		font-weight: 700;
+		text-decoration: none;
+		border: 1px solid var(--line);
+		min-height: 44px;
+		box-sizing: border-box;
+	}
+	.btn.primary {
+		background: var(--accent);
+		color: var(--bg);
+		border-color: var(--accent);
+	}
+	.btn.primary:hover {
+		background: var(--accent-dark);
+		color: var(--bg);
+	}
+	.btn.ghost {
+		color: #fff;
+	}
+	.btn.ghost:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.hero-art {
+		background: var(--surface);
+		border-bottom: 6px solid var(--red);
+		min-height: 300px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.tabs {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-bottom: 1.2rem;
+	}
+	.tab {
+		padding: 0.55rem 1.1rem;
+		background: var(--surface);
+		color: #fff;
+		text-decoration: none;
+		font-size: 0.9rem;
+		font-weight: 600;
+		min-height: 44px;
+		box-sizing: border-box;
+		display: inline-flex;
+		align-items: center;
+	}
+	.tab.active {
+		background: var(--accent);
+		color: var(--bg);
+	}
+	.tab:hover:not(.active) {
+		background: var(--surface-2);
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 1.2rem;
+	}
+	.card {
+		display: block;
+		background: var(--surface);
+		text-decoration: none;
+		color: #fff;
+	}
+	.card:hover {
+		outline: 2px solid var(--accent);
+	}
+	.thumb {
+		height: 120px;
+		background: var(--surface-2);
+		display: flex;
+		align-items: flex-end;
+		padding: 0.8rem 1rem;
+		border-top: 3px solid var(--accent);
+	}
+	.thumb span {
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 2rem;
+		text-transform: uppercase;
+		opacity: 0.3;
+		line-height: 1;
+	}
+	.body {
+		padding: 1rem 1.1rem 1.2rem;
+	}
+	.meta {
+		color: var(--accent);
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		margin: 0 0 0.4rem;
+	}
+	.card h3 {
+		font-size: 1.6rem;
+		margin: 0;
+	}
+	.muted {
+		color: rgb(var(--gray));
+	}
+	.map-section {
+		margin-top: 4rem;
+		scroll-margin-top: 90px;
+	}
+	.section-title {
+		text-transform: uppercase;
+		font-size: 2.2rem;
+	}
+	.map-wrap {
+		display: flex;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+	}
+	#colombia-map {
+		flex: 1 1 500px;
+		height: 480px;
+		background: #0e1840;
+		border: 1px solid var(--line);
+	}
+	#map-panel {
+		flex: 1 1 260px;
+		padding: 1.5rem;
+		background: var(--surface);
+		border: 1px solid var(--line);
+	}
+	#map-panel h3 {
+		margin-top: 0;
+		text-transform: uppercase;
+	}
+	.stat-row {
+		display: flex;
+		justify-content: space-between;
+		padding: 0.5em 0;
+		border-bottom: 1px solid var(--line);
+	}
+	.stat-row b {
+		font-family: var(--font-display);
+		font-size: 1.5rem;
+		color: #fff;
+	}
+	.hint {
+		color: rgb(var(--gray));
+		font-size: 0.85em;
+		margin: 1rem 0 0;
+	}
+	:global(.leaflet-control-attribution) {
+		background: rgba(10, 18, 48, 0.85) !important;
+		color: #8fa0c8 !important;
+	}
+	:global(.leaflet-control-attribution a) {
+		color: #ffd21a !important;
+	}
+	@media (max-width: 860px) {
+		.hero {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+			padding-top: 1rem;
+		}
+		.hero-art {
+			min-height: 220px;
+		}
+		#colombia-map {
+			height: 360px;
+		}
+	}
+</style>

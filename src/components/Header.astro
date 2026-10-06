@@ -9,10 +9,13 @@ const otherLang = lang === 'es' ? 'en' : 'es';
 const otherPath = '/' + otherLang + Astro.url.pathname.slice(('/' + lang).length || 0);
 ---
 
-<header>
-	<nav>
-		<h2><a href={`/${lang}/`}>{SITE_TITLE}</a></h2>
-		<div class="internal-links">
+<header class="site-header">
+	<div class="bar">
+		<a class="brand" href={`/${lang}/`}><span class="mark"></span>{SITE_TITLE}</a>
+		<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
+			<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+		</button>
+		<nav id="site-nav" class="links">
 			<HeaderLink href={`/${lang}/`}>{t('nav.home')}</HeaderLink>
 			<HeaderLink href={`/${lang}/blog`}>{t('nav.blog')}</HeaderLink>
 			<HeaderLink href={`/${lang}/about`}>{t('nav.about')}</HeaderLink>
@@ -20,56 +23,130 @@ const otherPath = '/' + otherLang + Astro.url.pathname.slice(('/' + lang).length
 			<HeaderLink href={`/${lang}/categoria/incautaciones`}>{t('cat.incautaciones')}</HeaderLink>
 			<HeaderLink href={`/${lang}/categoria/sometimientos`}>{t('cat.sometimientos')}</HeaderLink>
 			<HeaderLink href={`/${lang}/categoria/bajas`}>{t('cat.bajas')}</HeaderLink>
-		</div>
-		<div class="lang-switch">
-			<a href={otherPath}>{otherLang.toUpperCase()}</a>
-		</div>
-	</nav>
+			<a class="lang" href={otherPath}>{otherLang.toUpperCase()}</a>
+		</nav>
+	</div>
 </header>
+
 <style>
-	header {
-		margin: 0;
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 2000;
+		background: rgba(10, 18, 48, 0.94);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid var(--line);
+	}
+	.bar {
+		max-width: 1160px;
+		margin: 0 auto;
 		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
-	nav {
+		min-height: 68px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		flex-wrap: wrap;
+		gap: 1.5rem;
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 1.7rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: #fff;
 		text-decoration: none;
 	}
-	nav a.active {
+	.mark {
+		width: 10px;
+		height: 28px;
+		background: var(--accent);
+		display: inline-block;
+	}
+	.links {
+		display: flex;
+		align-items: center;
+		gap: 1.4rem;
+	}
+	.links :global(a) {
+		color: rgb(var(--gray-dark));
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-decoration: none;
+		padding: 0.5rem 0;
+		border-bottom: 2px solid transparent;
+	}
+	.links :global(a:hover) {
+		color: #fff;
+	}
+	.links :global(a.active) {
+		color: #fff;
+		font-weight: 600;
 		text-decoration: none;
 		border-bottom-color: var(--accent);
 	}
-	.internal-links {
-		display: flex;
-		flex-wrap: wrap;
-	}
-	.lang-switch a {
-		font-weight: bold;
-		border: 1px solid rgb(var(--gray));
+	.links .lang {
+		color: var(--accent);
+		border: 1px solid var(--accent);
 		border-radius: 6px;
-		padding: 0.3em 0.7em !important;
+		padding: 0.35rem 0.8rem;
 	}
-	@media (max-width: 720px) {
-		.internal-links {
-			font-size: 0.85em;
+	.links .lang:hover {
+		background: var(--accent);
+		color: var(--bg);
+	}
+	.menu-btn {
+		display: none;
+		width: 44px;
+		height: 44px;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		color: #fff;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		cursor: pointer;
+	}
+	@media (max-width: 960px) {
+		.menu-btn {
+			display: flex;
+		}
+		.links {
+			display: none;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			flex-direction: column;
+			align-items: stretch;
+			gap: 0;
+			background: var(--bg);
+			border-bottom: 1px solid var(--line);
+			padding: 0.5rem 1em 1.2rem;
+		}
+		.links.open {
+			display: flex;
+		}
+		.links :global(a) {
+			font-size: 1.05rem;
+			padding: 0.9rem 0;
+			border-bottom: 1px solid var(--line);
+		}
+		.links .lang {
+			align-self: flex-start;
+			margin-top: 1rem;
+			border: 1px solid var(--accent);
 		}
 	}
 </style>
+
+<script>
+	const btn = document.querySelector('.menu-btn');
+	const nav = document.getElementById('site-nav');
+	btn?.addEventListener('click', () => {
+		const open = nav?.classList.toggle('open');
+		btn.setAttribute('aria-expanded', String(!!open));
+	});
+</script>
