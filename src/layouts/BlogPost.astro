@@ -43,7 +43,7 @@ const jsonLd = {
 };
 ---
 
-<html lang="es">
+<html lang={Astro.url.pathname.startsWith("/en") ? "en" : "es"}>
 	<head>
 		<BaseHead title={title} description={description} />
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

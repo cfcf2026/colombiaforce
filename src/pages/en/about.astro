@@ -1,7 +1,7 @@
 ---
-import AboutHeroImage from '../../assets/blog-placeholder-about.jpg';
-import Layout from '../../layouts/BlogPost.astro';
+import BlogPost from '../../layouts/BlogPost.astro';
 ---
-<Layout title="About" description="About Colombia Force." pubDate={new Date('2026-09-23')} heroImage={AboutHeroImage}>
-	<p>Colombia Force is an independent digital outlet covering the Colombian government's offensive against organized crime: operations, seizures, and surrenders, based on official sources.</p>
-</Layout>
+<BlogPost title="About Colombia Force" description="An independent outlet that summarizes, in plain language, the Colombian state's actions against crime." pubDate={new Date('2026-09-23')}>
+  <p>Colombia Force publishes a short daily report on operations, seizures, surrenders and results of the offensive against crime in Colombia, based on official data and with a map by department.</p>
+  <p>We are an independent outlet and have no ties to the government. To learn how we work, read our <a href="/en/politica-editorial">editorial policy</a> or write to us through the <a href="/en/contacto">contact page</a>.</p>
+</BlogPost>

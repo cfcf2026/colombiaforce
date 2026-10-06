@@ -1,6 +1,20 @@
 ---
 const isEn = Astro.url.pathname.startsWith('/en');
+const lang = isEn ? 'en' : 'es';
 const year = new Date().getFullYear();
+const links = isEn
+	? [
+			{ href: '/en/about', label: 'About' },
+			{ href: '/en/politica-editorial', label: 'Editorial Policy' },
+			{ href: '/en/contacto', label: 'Contact' },
+			{ href: '/en/privacidad', label: 'Privacy Policy' },
+		]
+	: [
+			{ href: '/es/about', label: 'Nosotros' },
+			{ href: '/es/politica-editorial', label: 'Política editorial' },
+			{ href: '/es/contacto', label: 'Contacto' },
+			{ href: '/es/privacidad', label: 'Privacidad' },
+		];
 ---
 <footer>
 	<p class="brand">Colombia Force</p>
@@ -9,6 +23,9 @@ const year = new Date().getFullYear();
 			? "Independent daily briefing on Colombia's offensive against crime, based on official sources."
 			: 'Resumen diario independiente de la ofensiva contra la criminalidad en Colombia, con base en fuentes oficiales.'}
 	</p>
+	<nav class="legal" aria-label={isEn ? 'Site information' : 'Información del sitio'}>
+		{links.map((l) => <a href={l.href}>{l.label}</a>)}
+	</nav>
 	<p class="copy">© {year} Colombia Force</p>
 </footer>
 
@@ -34,6 +51,21 @@ const year = new Date().getFullYear();
 		max-width: 560px;
 		margin: 0 auto 0.8rem;
 		line-height: 1.5;
+	}
+	.legal {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.4rem 1.4rem;
+		margin: 0 0 1rem;
+	}
+	.legal a {
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+		font-weight: 600;
+	}
+	.legal a:hover {
+		color: var(--accent);
 	}
 	.copy {
 		margin: 0;
