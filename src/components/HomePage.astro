@@ -82,8 +82,8 @@ const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string]
 						<a class="btn ghost" href="#mapa">{copy.seeMap}</a>
 					</div>
 				</div>
-				<div class="hero-art" aria-hidden="true">
-					<svg viewBox="0 0 340 360" width="240" height="254"><polygon points="120,20 170,10 215,40 250,35 290,70 275,110 300,150 280,200 255,250 265,300 220,330 170,310 130,330 90,290 60,240 85,200 50,170 70,120 100,80" fill="#1b2963" stroke="#ffd21a" stroke-width="2" stroke-linejoin="round"></polygon></svg>
+				<div class="hero-art">
+					{featured?.data.heroImage ? <img class="hero-img" src={featured.data.heroImage} alt={featured.data.imageAlt ?? ''} /> : <svg aria-hidden="true" viewBox="0 0 340 360" width="240" height="254"><polygon points="120,20 170,10 215,40 250,35 290,70 275,110 300,150 280,200 255,250 265,300 220,330 170,310 130,330 90,290 60,240 85,200 50,170 70,120 100,80" fill="#1b2963" stroke="#ffd21a" stroke-width="2" stroke-linejoin="round"></polygon></svg>}
 				</div>
 			</section>
 
@@ -97,7 +97,7 @@ const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string]
 					<section class="grid">
 						{posts.slice(1, 9).map((p) => (
 							<a class="card" href={postHref(p)}>
-								<div class="thumb"><span>{label(p)}</span></div>
+								<div class="thumb" style={p.data.heroImage ? `background-image:url('${p.data.heroImage}')` : undefined}>{!p.data.heroImage && <span>{label(p)}</span>}</div>
 								<div class="body">
 									<p class="meta">{label(p)} · <FormattedDate date={p.data.pubDate} /></p>
 									<h3>{p.data.title}</h3>
@@ -389,4 +389,7 @@ const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string]
 			height: 360px;
 		}
 	}
+	.hero-img { width: 100%; height: 100%; min-height: 300px; max-height: 440px; object-fit: cover; display: block; }
+	.hero-art { overflow: hidden; }
+	.thumb { height: 160px; background-size: cover; background-position: center; }
 </style>

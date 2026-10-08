@@ -27,4 +27,6 @@ collections:
       - { name: pubDate, label: Fecha, widget: datetime, i18n: duplicate }
       - { name: category, label: Categoría, widget: select, i18n: duplicate,
           options: [operativos, incautaciones, sometimientos, bajas] }
+      - { name: heroImage, label: Imagen principal, widget: image, required: false, i18n: duplicate }
+      - { name: imageAlt, label: Descripción de la imagen, widget: string, required: false, i18n: true }
       - { name: body, label: Cuerpo, widget: markdown, i18n: true }
