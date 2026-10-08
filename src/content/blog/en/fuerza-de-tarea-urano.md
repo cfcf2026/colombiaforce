@@ -1,8 +1,10 @@
 ---
-title: "Government activates Joint Task Force Urano against fuel theft"
-description: "The government announced a task force of about 1,200 personnel to target the entire fuel-theft chain, and presented a first set of results."
+title: Government activates Joint Task Force Urano against fuel theft
+description: The government announced a task force of about 1,200 personnel to target the entire fuel-theft chain, and presented a first set of results.
 pubDate: 2026-10-08
 category: operativos
+heroImage: /images/1000176752.png
+imageAlt: ''
 ---
 
 The President of Colombia announced the activation of **Joint Task Force Urano**, created to go after the entire hydrocarbon-theft chain: seizure, storage, transport, purchase and sale. He said the General Command of the Armed Forces activated it a few days ago. It brings together units from the Army, Navy, Air Force and National Police, working with prosecutors from the Attorney General's Office and intelligence and criminal-investigation teams.

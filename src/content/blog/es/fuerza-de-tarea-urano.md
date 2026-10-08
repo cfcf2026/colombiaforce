@@ -1,8 +1,10 @@
 ---
-title: "Activan la Fuerza de Tarea Conjunta Urano contra el robo de hidrocarburos"
-description: "El Gobierno informó la activación de una fuerza de cerca de 1.200 integrantes para atacar toda la cadena del robo de combustible, y presentó un primer balance de resultados."
+title: Activan la Fuerza de Tarea Conjunta Urano contra el robo de hidrocarburos
+description: El Gobierno informó la activación de una fuerza de cerca de 1.200 integrantes para atacar toda la cadena del robo de combustible, y presentó un primer balance de resultados.
 pubDate: 2026-10-08
 category: operativos
+heroImage: /images/1000176752.png
+imageAlt: Nueva fuerza militar de tarea conjunta contra el robo de hidrocarburos en Colombia
 ---
 
 El presidente de la República anunció la activación de la **Fuerza de Tarea Conjunta Urano**, creada para actuar contra toda la cadena del robo de hidrocarburos: apoderamiento, almacenamiento, transporte, compra y comercialización. Según explicó, el Comando General de las Fuerzas Militares la activó hace pocos días. La integran unidades del Ejército, la Armada, la Fuerza Aérea y la Policía, junto con funcionarios de la Fiscalía y equipos de inteligencia e investigación criminal.
