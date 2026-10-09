@@ -62,6 +62,15 @@ const featured = posts[0];
 const postHref = (p: (typeof posts)[number]) => postPath(lang, p);
 const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string] ?? '';
 
+const nationalStats = { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
+for (const p of posts) nationalStats[p.data.category] += 1;
+const nationalTotal = Object.values(nationalStats).reduce((a, b) => a + b, 0);
+const mapCopy =
+	lang === 'es'
+		? { national: 'Total nacional', sub: 'Todas las notas publicadas', one: 'nota', many: 'notas', reset: 'Ver total nacional', tap: 'Toca o pasa el mouse sobre un departamento.' }
+		: { national: 'Nationwide total', sub: 'All published reports', one: 'report', many: 'reports', reset: 'Show nationwide total', tap: 'Tap or hover over a department.' };
+const nationalSubtitle = `${mapCopy.sub} · ${nationalTotal} ${nationalTotal === 1 ? mapCopy.one : mapCopy.many}`;
+
 const mapStats: Record<string, Record<string, number>> = {};
 for (const p of posts) {
 	for (const d of p.data.departments ?? []) {
@@ -123,14 +132,17 @@ for (const p of posts) {
 			<section id="mapa" class="map-section">
 				<h2 class="section-title">{copy.mapTitle}</h2>
 				<div class="map-wrap">
-					<div id="colombia-map" data-error={copy.mapError} data-stats={JSON.stringify(mapStats)} data-names={JSON.stringify(DEPARTMENT_NAMES)}></div>
+					<div id="colombia-map" data-error={copy.mapError} data-stats={JSON.stringify(mapStats)} data-names={JSON.stringify(DEPARTMENT_NAMES)} data-national={JSON.stringify(nationalStats)} data-copy={JSON.stringify(mapCopy)}></div>
 					<div id="map-panel">
-						<h3 id="map-panel-title">{copy.hover}</h3>
-						<div class="stat-row"><span>{catLabel.operativos}</span><b id="stat-operativos">—</b></div>
-						<div class="stat-row"><span>{catLabel.incautaciones}</span><b id="stat-incautaciones">—</b></div>
-						<div class="stat-row"><span>{catLabel.sometimientos}</span><b id="stat-sometimientos">—</b></div>
-						<div class="stat-row"><span>{catLabel.bajas}</span><b id="stat-bajas">—</b></div>
-						<p class="hint">{copy.hint}</p>
+						<h3 id="map-panel-title">{mapCopy.national}</h3>
+						<p id="map-panel-sub" class="sub">{nationalSubtitle}</p>
+						<div class="stat-row"><span>{catLabel.operativos}</span><b id="stat-operativos">{nationalStats.operativos}</b></div>
+						<div class="stat-row"><span>{catLabel.incautaciones}</span><b id="stat-incautaciones">{nationalStats.incautaciones}</b></div>
+						<div class="stat-row"><span>{catLabel.sometimientos}</span><b id="stat-sometimientos">{nationalStats.sometimientos}</b></div>
+						<div class="stat-row"><span>{catLabel.bajas}</span><b id="stat-bajas">{nationalStats.bajas}</b></div>
+						<button id="map-reset" class="map-reset" type="button" hidden>{mapCopy.reset}</button>
+						<div class="legend" aria-hidden="true"><span>{lang === 'es' ? 'Menos notas' : 'Fewer reports'}</span><i></i><span>{lang === 'es' ? 'Más notas' : 'More reports'}</span></div>
+						<p class="hint">{mapCopy.tap} {copy.hint}</p>
 					</div>
 				</div>
 			</section>
@@ -139,63 +151,125 @@ for (const p of posts) {
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" is:inline></script>
 		<script>
-			// Cifras reales: la portada cuenta las notas por departamento y categoría y las pasa por data-stats.
-			const mapEl0 = document.getElementById('colombia-map');
-			const statsData: Record<string, { operativos: number; incautaciones: number; sometimientos: number; bajas: number }> = JSON.parse(mapEl0?.dataset.stats ?? '{}');
-			const names: Record<string, string> = JSON.parse(mapEl0?.dataset.names ?? '{}');
+	declare const L: any;
 
-			function getStats(name: string) {
-				return statsData[name] ?? { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
-			}
+	type Stats = { operativos: number; incautaciones: number; sometimientos: number; bajas: number };
+	const KEYS = ['operativos', 'incautaciones', 'sometimientos', 'bajas'] as const;
+	const EMPTY: Stats = { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
 
-			document.addEventListener('DOMContentLoaded', async () => {
-				const mapEl = document.getElementById('colombia-map');
-				// @ts-ignore - L viene del script de Leaflet cargado por CDN
-				const map = L.map('colombia-map', { zoomControl: true, scrollWheelZoom: false }).setView([4.5, -74.3], 5);
+	document.addEventListener('DOMContentLoaded', async () => {
+		const mapEl = document.getElementById('colombia-map');
+		if (!mapEl) return;
 
-				// @ts-ignore
-				L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-					attribution: '&copy; OpenStreetMap &copy; CARTO',
-					maxZoom: 10,
-				}).addTo(map);
+		const byDept: Record<string, Stats> = JSON.parse(mapEl.dataset.stats ?? '{}');
+		const national: Stats = { ...EMPTY, ...JSON.parse(mapEl.dataset.national ?? '{}') };
+		const names: Record<string, string> = JSON.parse(mapEl.dataset.names ?? '{}');
+		const txt = JSON.parse(mapEl.dataset.copy ?? '{}');
 
-				const panelTitle = document.getElementById('map-panel-title');
-				const statOperativos = document.getElementById('stat-operativos');
-				const statIncautaciones = document.getElementById('stat-incautaciones');
-				const statSometimientos = document.getElementById('stat-sometimientos');
-				const statBajas = document.getElementById('stat-bajas');
+		const total = (s: Stats) => KEYS.reduce((sum, k) => sum + (s[k] ?? 0), 0);
+		const statsOf = (name: string): Stats => byDept[name] ?? EMPTY;
+		const maxTotal = Math.max(0, ...Object.values(byDept).map(total));
+		const noteLabel = (n: number) => `${n} ${n === 1 ? txt.one : txt.many}`;
 
-				const base = { color: '#ffd21a', weight: 1, fillColor: '#1b2963', fillOpacity: 0.65 };
+		const panelTitle = document.getElementById('map-panel-title');
+		const panelSub = document.getElementById('map-panel-sub');
+		const resetBtn = document.getElementById('map-reset') as HTMLButtonElement | null;
+		const statEls = KEYS.map((k) => document.getElementById('stat-' + k));
 
-				try {
-					const res = await fetch('/data/colombia.geo.json');
-					const geojson = await res.json();
+		let selected: string | null = null;
+		const layers = new Map<string, any>();
 
-					// @ts-ignore
-					const layer = L.geoJSON(geojson, {
-						style: base,
-						onEachFeature: (feature: any, lyr: any) => {
-							const name = feature.properties.NOMBRE_DPT;
-							lyr.on('mouseover', () => {
-								lyr.setStyle({ fillColor: '#ffd21a', fillOpacity: 0.55 });
-								const s = getStats(name);
-								if (panelTitle) panelTitle.textContent = names[name] ?? name;
-								if (statOperativos) statOperativos.textContent = String(s.operativos);
-								if (statIncautaciones) statIncautaciones.textContent = String(s.incautaciones);
-								if (statSometimientos) statSometimientos.textContent = String(s.sometimientos);
-								if (statBajas) statBajas.textContent = String(s.bajas);
-							});
-							lyr.on('mouseout', () => lyr.setStyle(base));
-						},
-					}).addTo(map);
-
-					map.fitBounds(layer.getBounds());
-				} catch (err) {
-					console.error('No se pudo cargar el mapa de departamentos', err);
-					if (panelTitle) panelTitle.textContent = mapEl?.dataset.error ?? '';
-				}
+		// Muestra el departamento en hover o seleccionado; si no hay ninguno, el total nacional.
+		function render(hover: string | null) {
+			const name = hover ?? selected;
+			const s = name ? statsOf(name) : national;
+			if (panelTitle) panelTitle.textContent = name ? (names[name] ?? name) : txt.national;
+			if (panelSub) panelSub.textContent = name ? noteLabel(total(s)) : `${txt.sub} · ${noteLabel(total(national))}`;
+			KEYS.forEach((k, i) => {
+				const el = statEls[i];
+				if (el) el.textContent = String(s[k] ?? 0);
 			});
-		</script>
+			if (resetBtn) resetBtn.hidden = selected === null;
+		}
+
+		// Color según el número de notas del departamento.
+		function styleFor(name: string, state?: 'hover' | 'selected') {
+			const n = total(statsOf(name));
+			const fill =
+				n === 0
+					? { fillColor: '#1b2963', fillOpacity: 0.65 }
+					: { fillColor: '#ffd21a', fillOpacity: 0.3 + 0.6 * (n / maxTotal) };
+			return {
+				color: state ? '#ffffff' : '#ffd21a',
+				weight: state === 'selected' ? 3 : state === 'hover' ? 2.5 : 1,
+				...fill,
+			};
+		}
+
+		function select(name: string | null) {
+			const prev = selected;
+			selected = name;
+			if (prev) layers.get(prev)?.setStyle(styleFor(prev));
+			if (name) {
+				const l = layers.get(name);
+				l?.setStyle(styleFor(name, 'selected'));
+				l?.bringToFront();
+			}
+			render(null);
+		}
+
+		render(null);
+		resetBtn?.addEventListener('click', () => select(null));
+
+		const mobile = !!L.Browser.mobile;
+		const canHover = window.matchMedia('(hover: hover)').matches;
+
+		const map = L.map('colombia-map', {
+			zoomControl: !mobile,
+			scrollWheelZoom: false,
+			dragging: !mobile,
+			touchZoom: !mobile,
+			doubleClickZoom: !mobile,
+		}).setView([4.5, -74.3], 5);
+
+		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+			attribution: '&copy; OpenStreetMap &copy; CARTO',
+			maxZoom: 10,
+		}).addTo(map);
+
+		try {
+			const res = await fetch('/data/colombia.geo.json');
+			const geojson = await res.json();
+
+			const layer = L.geoJSON(geojson, {
+				style: (f: any) => styleFor(f.properties.NOMBRE_DPT),
+				bubblingMouseEvents: false,
+				onEachFeature: (feature: any, lyr: any) => {
+					const name: string = feature.properties.NOMBRE_DPT;
+					layers.set(name, lyr);
+					lyr.on('mouseover', () => {
+						if (!canHover) return;
+						lyr.setStyle(styleFor(name, 'hover'));
+						lyr.bringToFront();
+						render(name);
+					});
+					lyr.on('mouseout', () => {
+						if (!canHover) return;
+						lyr.setStyle(styleFor(name, selected === name ? 'selected' : undefined));
+						render(null);
+					});
+					lyr.on('click', () => select(selected === name ? null : name));
+				},
+			}).addTo(map);
+
+			map.fitBounds(layer.getBounds());
+			map.on('click', () => select(null));
+		} catch (err) {
+			console.error('No se pudo cargar el mapa de departamentos', err);
+			if (panelTitle) panelTitle.textContent = mapEl.dataset.error ?? '';
+		}
+	});
+</script>
 	</body>
 </html>
 
@@ -404,4 +478,11 @@ for (const p of posts) {
 	.hero-img { width: 100%; height: 100%; min-height: 300px; max-height: 440px; object-fit: cover; display: block; }
 	.hero-art { overflow: hidden; }
 	.thumb { height: 160px; background-size: cover; background-position: center; }
+	#map-panel .sub { color: rgb(var(--gray)); margin: -0.4rem 0 0.8rem; font-size: 0.9rem; }
+	.map-reset { margin-top: 1rem; min-height: 44px; padding: 0.6rem 1.1rem; background: transparent; color: #fff; border: 1px solid var(--line); font-weight: 700; cursor: pointer; }
+	.map-reset:hover { border-color: var(--accent); color: var(--accent); }
+	.map-reset[hidden] { display: none; }
+	.legend { display: flex; align-items: center; gap: 0.6rem; margin-top: 1rem; font-size: 0.8rem; color: rgb(var(--gray)); }
+	.legend i { flex: 1; height: 8px; background: linear-gradient(90deg, rgba(255, 210, 26, 0.3), rgba(255, 210, 26, 0.9)); }
+	@media (max-width: 860px) { #map-panel { order: -1; } }
 </style>
