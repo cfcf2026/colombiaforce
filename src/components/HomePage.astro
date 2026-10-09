@@ -7,6 +7,7 @@ import Header from './Header.astro';
 import { SITE_TITLE } from '../consts';
 import { useTranslations } from '../i18n/ui';
 import { postPath, categoryPath } from '../i18n/routes';
+import { DEPARTMENT_NAMES } from '../departments';
 
 interface Props {
 	lang: 'es' | 'en';
@@ -26,7 +27,7 @@ const copy = {
 		more: 'Pronto habrá más notas.',
 		mapTitle: 'Mapa por departamento',
 		hover: 'Pasa el mouse sobre un departamento',
-		hint: 'Cifras de ejemplo. Se conectarán a los datos reales de cada nota más adelante.',
+		hint: 'Notas publicadas por departamento y categoría. Las notas de alcance nacional no se asignan a un departamento.',
 		mapError: 'No se pudo cargar el mapa',
 	},
 	en: {
@@ -40,7 +41,7 @@ const copy = {
 		more: 'More reports coming soon.',
 		mapTitle: 'Map by department',
 		hover: 'Hover over a department',
-		hint: 'Sample figures. They will be connected to the real data from each report later.',
+		hint: 'Published reports by department and category. Nationwide reports are not assigned to a department.',
 		mapError: 'The map could not be loaded',
 	},
 }[lang];
@@ -60,6 +61,14 @@ const posts = (await getCollection('blog', ({ id }) => id.startsWith(prefix))).s
 const featured = posts[0];
 const postHref = (p: (typeof posts)[number]) => postPath(lang, p);
 const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string] ?? '';
+
+const mapStats: Record<string, Record<string, number>> = {};
+for (const p of posts) {
+	for (const d of p.data.departments ?? []) {
+		mapStats[d] ??= { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
+		mapStats[d][p.data.category] += 1;
+	}
+}
 ---
 
 <!doctype html>
@@ -114,7 +123,7 @@ const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string]
 			<section id="mapa" class="map-section">
 				<h2 class="section-title">{copy.mapTitle}</h2>
 				<div class="map-wrap">
-					<div id="colombia-map" data-error={copy.mapError}></div>
+					<div id="colombia-map" data-error={copy.mapError} data-stats={JSON.stringify(mapStats)} data-names={JSON.stringify(DEPARTMENT_NAMES)}></div>
 					<div id="map-panel">
 						<h3 id="map-panel-title">{copy.hover}</h3>
 						<div class="stat-row"><span>{catLabel.operativos}</span><b id="stat-operativos">—</b></div>
@@ -130,8 +139,10 @@ const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string]
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" is:inline></script>
 		<script>
-			// Datos de ejemplo por departamento. Reemplazar con datos reales más adelante.
-			const statsData: Record<string, { operativos: number; incautaciones: number; sometimientos: number; bajas: number }> = {};
+			// Cifras reales: la portada cuenta las notas por departamento y categoría y las pasa por data-stats.
+			const mapEl0 = document.getElementById('colombia-map');
+			const statsData: Record<string, { operativos: number; incautaciones: number; sometimientos: number; bajas: number }> = JSON.parse(mapEl0?.dataset.stats ?? '{}');
+			const names: Record<string, string> = JSON.parse(mapEl0?.dataset.names ?? '{}');
 
 			function getStats(name: string) {
 				return statsData[name] ?? { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
@@ -168,7 +179,7 @@ const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string]
 							lyr.on('mouseover', () => {
 								lyr.setStyle({ fillColor: '#ffd21a', fillOpacity: 0.55 });
 								const s = getStats(name);
-								if (panelTitle) panelTitle.textContent = name;
+								if (panelTitle) panelTitle.textContent = names[name] ?? name;
 								if (statOperativos) statOperativos.textContent = String(s.operativos);
 								if (statIncautaciones) statIncautaciones.textContent = String(s.incautaciones);
 								if (statSometimientos) statSometimientos.textContent = String(s.sometimientos);

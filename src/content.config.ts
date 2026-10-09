@@ -11,6 +11,7 @@ const blog = defineCollection({
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
 		imageAlt: z.string().optional(),
+		departments: z.array(z.string()).default([]),
 		urlSlug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
 		category: z.enum(['operativos', 'incautaciones', 'sometimientos', 'bajas']),
 	}),

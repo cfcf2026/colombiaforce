@@ -29,6 +29,47 @@ collections:
           options: [operativos, incautaciones, sometimientos, bajas] }
       - { name: heroImage, label: Imagen principal, widget: image, required: false, i18n: true }
       - { name: imageAlt, label: Descripción de la imagen, widget: string, required: false, i18n: true }
+      - name: departments
+        label: Departamentos (opcional)
+        widget: select
+        multiple: true
+        required: false
+        i18n: duplicate
+        hint: "Elige dónde ocurrió. Déjalo vacío si la nota es de alcance nacional."
+        options:
+          - { label: "Amazonas", value: "AMAZONAS" }
+          - { label: "Antioquia", value: "ANTIOQUIA" }
+          - { label: "Arauca", value: "ARAUCA" }
+          - { label: "San Andrés, Providencia y Santa Catalina", value: "ARCHIPIELAGO DE SAN ANDRES PROVIDENCIA Y SANTA CATALINA" }
+          - { label: "Atlántico", value: "ATLANTICO" }
+          - { label: "Bolívar", value: "BOLIVAR" }
+          - { label: "Boyacá", value: "BOYACA" }
+          - { label: "Caldas", value: "CALDAS" }
+          - { label: "Caquetá", value: "CAQUETA" }
+          - { label: "Casanare", value: "CASANARE" }
+          - { label: "Cauca", value: "CAUCA" }
+          - { label: "Cesar", value: "CESAR" }
+          - { label: "Chocó", value: "CHOCO" }
+          - { label: "Córdoba", value: "CORDOBA" }
+          - { label: "Cundinamarca", value: "CUNDINAMARCA" }
+          - { label: "Guainía", value: "GUAINIA" }
+          - { label: "Guaviare", value: "GUAVIARE" }
+          - { label: "Huila", value: "HUILA" }
+          - { label: "La Guajira", value: "LA GUAJIRA" }
+          - { label: "Magdalena", value: "MAGDALENA" }
+          - { label: "Meta", value: "META" }
+          - { label: "Nariño", value: "NARIÑO" }
+          - { label: "Norte de Santander", value: "NORTE DE SANTANDER" }
+          - { label: "Putumayo", value: "PUTUMAYO" }
+          - { label: "Quindío", value: "QUINDIO" }
+          - { label: "Risaralda", value: "RISARALDA" }
+          - { label: "Bogotá D.C.", value: "SANTAFE DE BOGOTA D.C" }
+          - { label: "Santander", value: "SANTANDER" }
+          - { label: "Sucre", value: "SUCRE" }
+          - { label: "Tolima", value: "TOLIMA" }
+          - { label: "Valle del Cauca", value: "VALLE DEL CAUCA" }
+          - { label: "Vaupés", value: "VAUPES" }
+          - { label: "Vichada", value: "VICHADA" }
       - { name: urlSlug, label: Dirección web (slug), widget: string, required: false, i18n: true,
           hint: "Opcional. Solo minúsculas, números y guiones. Ej: urano-task-force-fuel-theft. Si lo dejas vacío se usa el nombre del archivo.",
           pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 'Solo minúsculas, números y guiones'] }
