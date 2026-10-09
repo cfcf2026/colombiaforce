@@ -19,6 +19,8 @@ export default defineConfig({
     '/en/categoria/sometimientos': '/en/category/surrenders',
     '/en/categoria/bajas': '/en/category/casualties',
     '/en/blog/fuerza-de-tarea-urano': '/en/blog/urano-task-force-fuel-theft',
+    '/es/blog/primera-nota': '/es/blog',
+    '/en/blog/primera-nota': '/en/blog',
   },
   i18n: {
     locales: ['es', 'en'],
