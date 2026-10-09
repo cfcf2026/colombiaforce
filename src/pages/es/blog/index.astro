@@ -6,6 +6,7 @@ import Footer from '../../../components/Footer.astro';
 import FormattedDate from '../../../components/FormattedDate.astro';
 import Header from '../../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../../consts';
+import { postPath } from '../../../i18n/routes';
 
 const posts = (await getCollection('blog', ({ id }) => id.startsWith('es/')))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -80,7 +81,7 @@ const posts = (await getCollection('blog', ({ id }) => id.startsWith('es/')))
 					{
 						posts.map((post) => (
 							<li>
-								<a href={`/es/blog/${post.id.replace(/^es\//, '')}/`}>
+								<a href={postPath('es', post)}>
 									{post.data.heroImage && (
 										<Image width={720} height={360} src={post.data.heroImage} alt="" />
 									)}

@@ -6,6 +6,7 @@ import FormattedDate from './FormattedDate.astro';
 import Header from './Header.astro';
 import { SITE_TITLE } from '../consts';
 import { useTranslations } from '../i18n/ui';
+import { postPath, categoryPath } from '../i18n/routes';
 
 interface Props {
 	lang: 'es' | 'en';
@@ -57,7 +58,7 @@ const posts = (await getCollection('blog', ({ id }) => id.startsWith(prefix))).s
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const featured = posts[0];
-const postHref = (p: (typeof posts)[number]) => `/${lang}/blog/${p.id.replace(/^(es|en)\//, '')}/`;
+const postHref = (p: (typeof posts)[number]) => postPath(lang, p);
 const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string] ?? '';
 ---
 
@@ -89,7 +90,7 @@ const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string]
 
 			<nav class="tabs" aria-label={copy.latest}>
 				<a class="tab active" href={`/${lang}/blog`}>{copy.all}</a>
-				{catSlugs.map((s) => <a class="tab" href={`/${lang}/categoria/${s}`}>{catLabel[s]}</a>)}
+				{catSlugs.map((s) => <a class="tab" href={categoryPath(lang, s)}>{catLabel[s]}</a>)}
 			</nav>
 
 			{

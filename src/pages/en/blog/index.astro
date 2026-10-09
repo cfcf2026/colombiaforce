@@ -6,6 +6,7 @@ import Footer from '../../../components/Footer.astro';
 import FormattedDate from '../../../components/FormattedDate.astro';
 import Header from '../../../components/Header.astro';
 import { SITE_TITLE } from '../../../consts';
+import { postPath } from '../../../i18n/routes';
 
 const SITE_DESCRIPTION_EN =
 	'Daily summary of operations, seizures, and results of the offensive against crime in Colombia, based on official sources.';
@@ -83,7 +84,7 @@ const posts = (await getCollection('blog', ({ id }) => id.startsWith('en/')))
 					{
 						posts.map((post) => (
 							<li>
-								<a href={`/en/blog/${post.id.replace(/^en\//, '')}/`}>
+								<a href={postPath('en', post)}>
 									{post.data.heroImage && (
 										<Image width={720} height={360} src={post.data.heroImage} alt="" />
 									)}

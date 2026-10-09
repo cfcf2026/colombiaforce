@@ -1,11 +1,12 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../../layouts/BlogPost.astro';
+import { postSlug } from '../../../i18n/routes';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog', ({ id }) => id.startsWith('es/'));
 	return posts.map((post) => ({
-		params: { slug: post.id.replace(/^es\//, '') },
+		params: { slug: postSlug(post) },
 		props: post,
 	}));
 }

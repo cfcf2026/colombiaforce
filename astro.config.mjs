@@ -18,6 +18,7 @@ export default defineConfig({
     '/en/categoria/incautaciones': '/en/category/seizures',
     '/en/categoria/sometimientos': '/en/category/surrenders',
     '/en/categoria/bajas': '/en/category/casualties',
+    '/en/blog/fuerza-de-tarea-urano': '/en/blog/urano-task-force-fuel-theft',
   },
   i18n: {
     locales: ['es', 'en'],

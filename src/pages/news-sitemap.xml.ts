@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { postSlug } from '../i18n/routes';
 
 export const GET: APIRoute = async () => {
 	const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
@@ -10,7 +11,7 @@ export const GET: APIRoute = async () => {
 	const urls = recentPosts
 		.map((post) => {
 			const lang = post.id.startsWith('en/') ? 'en' : 'es';
-			const slug = post.id.replace(/^(es|en)\//, '');
+			const slug = postSlug(post);
 			const url = `https://colombiaforce.com/${lang}/blog/${slug}/`;
 			const pubDate = post.data.pubDate.toISOString();
 

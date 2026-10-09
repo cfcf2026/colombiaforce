@@ -3,6 +3,7 @@ title: Government activates Joint Task Force Urano against fuel theft
 description: The government announced a task force of about 1,200 personnel to target the entire fuel-theft chain, and presented a first set of results.
 pubDate: 2026-10-08
 category: operativos
+urlSlug: urano-task-force-fuel-theft
 heroImage: /images/1000176753.png
 imageAlt: Joint task force Urano to fight fuel theft in Colombia
 ---
