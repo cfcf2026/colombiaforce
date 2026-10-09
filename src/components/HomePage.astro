@@ -106,7 +106,27 @@ for (const p of posts) {
 				</div>
 			</section>
 
-			<nav class="tabs" aria-label={copy.latest}>
+			<section id="mapa" class="map-section">
+				<h2 class="section-title">{copy.mapTitle}</h2>
+				<div class="map-wrap">
+					<div id="colombia-map" data-error={copy.mapError} data-stats={JSON.stringify(mapStats)} data-names={JSON.stringify(DEPARTMENT_NAMES)} data-national={JSON.stringify(nationalStats)} data-copy={JSON.stringify(mapCopy)}></div>
+					<div id="map-panel">
+						<h3 id="map-panel-title">{mapCopy.national}</h3>
+						<p id="map-panel-sub" class="sub">{nationalSubtitle}</p>
+						<div class="stat-row"><span>{catLabel.operativos}</span><b id="stat-operativos">{nationalStats.operativos}</b></div>
+						<div class="stat-row"><span>{catLabel.incautaciones}</span><b id="stat-incautaciones">{nationalStats.incautaciones}</b></div>
+						<div class="stat-row"><span>{catLabel.sometimientos}</span><b id="stat-sometimientos">{nationalStats.sometimientos}</b></div>
+						<div class="stat-row"><span>{catLabel.bajas}</span><b id="stat-bajas">{nationalStats.bajas}</b></div>
+						<button id="map-reset" class="map-reset" type="button" hidden>{mapCopy.reset}</button>
+						<div class="legend" aria-hidden="true"><span>{lang === 'es' ? 'Menos notas' : 'Fewer reports'}</span><i></i><span>{lang === 'es' ? 'Más notas' : 'More reports'}</span></div>
+						<p class="hint">{mapCopy.tap} {copy.hint}</p>
+					</div>
+				</div>
+			</section>
+
+			<div class="latest">
+				<h2 class="section-title">{copy.latest}</h2>
+				<nav class="tabs" aria-label={copy.latest}>
 				<a class="tab active" href={`/${lang}/blog`}>{copy.all}</a>
 				{catSlugs.map((s) => <a class="tab" href={categoryPath(lang, s)}>{catLabel[s]}</a>)}
 			</nav>
@@ -128,24 +148,7 @@ for (const p of posts) {
 					<p class="muted">{posts.length ? copy.more : copy.empty}</p>
 				)
 			}
-
-			<section id="mapa" class="map-section">
-				<h2 class="section-title">{copy.mapTitle}</h2>
-				<div class="map-wrap">
-					<div id="colombia-map" data-error={copy.mapError} data-stats={JSON.stringify(mapStats)} data-names={JSON.stringify(DEPARTMENT_NAMES)} data-national={JSON.stringify(nationalStats)} data-copy={JSON.stringify(mapCopy)}></div>
-					<div id="map-panel">
-						<h3 id="map-panel-title">{mapCopy.national}</h3>
-						<p id="map-panel-sub" class="sub">{nationalSubtitle}</p>
-						<div class="stat-row"><span>{catLabel.operativos}</span><b id="stat-operativos">{nationalStats.operativos}</b></div>
-						<div class="stat-row"><span>{catLabel.incautaciones}</span><b id="stat-incautaciones">{nationalStats.incautaciones}</b></div>
-						<div class="stat-row"><span>{catLabel.sometimientos}</span><b id="stat-sometimientos">{nationalStats.sometimientos}</b></div>
-						<div class="stat-row"><span>{catLabel.bajas}</span><b id="stat-bajas">{nationalStats.bajas}</b></div>
-						<button id="map-reset" class="map-reset" type="button" hidden>{mapCopy.reset}</button>
-						<div class="legend" aria-hidden="true"><span>{lang === 'es' ? 'Menos notas' : 'Fewer reports'}</span><i></i><span>{lang === 'es' ? 'Más notas' : 'More reports'}</span></div>
-						<p class="hint">{mapCopy.tap} {copy.hint}</p>
-					</div>
-				</div>
-			</section>
+			</div>
 		</main>
 		<Footer />
 
@@ -232,10 +235,6 @@ for (const p of posts) {
 			doubleClickZoom: !mobile,
 		}).setView([4.5, -74.3], 5);
 
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-			attribution: '&copy; OpenStreetMap &copy; CARTO',
-			maxZoom: 10,
-		}).addTo(map);
 
 		try {
 			const res = await fetch('/data/colombia.geo.json');
@@ -485,4 +484,6 @@ for (const p of posts) {
 	.legend { display: flex; align-items: center; gap: 0.6rem; margin-top: 1rem; font-size: 0.8rem; color: rgb(var(--gray)); }
 	.legend i { flex: 1; height: 8px; background: linear-gradient(90deg, rgba(255, 210, 26, 0.3), rgba(255, 210, 26, 0.9)); }
 	@media (max-width: 860px) { #map-panel { order: -1; } }
+	.map-section { margin-top: 0; }
+	.latest { margin-top: 4rem; }
 </style>
