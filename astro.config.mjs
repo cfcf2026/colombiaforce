@@ -11,6 +11,13 @@ export default defineConfig({
     '/politica-editorial': '/es/politica-editorial',
     '/contacto': '/es/contacto',
     '/privacidad': '/es/privacidad',
+    '/en/politica-editorial': '/en/editorial-policy',
+    '/en/contacto': '/en/contact',
+    '/en/privacidad': '/en/privacy',
+    '/en/categoria/operativos': '/en/category/operations',
+    '/en/categoria/incautaciones': '/en/category/seizures',
+    '/en/categoria/sometimientos': '/en/category/surrenders',
+    '/en/categoria/bajas': '/en/category/casualties',
   },
   i18n: {
     locales: ['es', 'en'],

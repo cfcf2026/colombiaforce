@@ -2,11 +2,13 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
+import { getAlternates, categoryPath } from '../i18n/routes';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const otherLang = lang === 'es' ? 'en' : 'es';
-const otherPath = '/' + otherLang + Astro.url.pathname.slice(('/' + lang).length || 0);
+const alt = await getAlternates(Astro.url.pathname);
+const otherPath = alt.paired ? alt[otherLang] : `/${otherLang}/`;
 ---
 
 <header class="site-header">
@@ -19,10 +21,10 @@ const otherPath = '/' + otherLang + Astro.url.pathname.slice(('/' + lang).length
 			<HeaderLink href={`/${lang}/`}>{t('nav.home')}</HeaderLink>
 			<HeaderLink href={`/${lang}/blog`}>{t('nav.blog')}</HeaderLink>
 			<HeaderLink href={`/${lang}/about`}>{t('nav.about')}</HeaderLink>
-			<HeaderLink href={`/${lang}/categoria/operativos`}>{t('cat.operativos')}</HeaderLink>
-			<HeaderLink href={`/${lang}/categoria/incautaciones`}>{t('cat.incautaciones')}</HeaderLink>
-			<HeaderLink href={`/${lang}/categoria/sometimientos`}>{t('cat.sometimientos')}</HeaderLink>
-			<HeaderLink href={`/${lang}/categoria/bajas`}>{t('cat.bajas')}</HeaderLink>
+			<HeaderLink href={categoryPath(lang, 'operativos')}>{t('cat.operativos')}</HeaderLink>
+			<HeaderLink href={categoryPath(lang, 'incautaciones')}>{t('cat.incautaciones')}</HeaderLink>
+			<HeaderLink href={categoryPath(lang, 'sometimientos')}>{t('cat.sometimientos')}</HeaderLink>
+			<HeaderLink href={categoryPath(lang, 'bajas')}>{t('cat.bajas')}</HeaderLink>
 			<a class="lang" href={otherPath}>{otherLang.toUpperCase()}</a>
 		</nav>
 	</div>

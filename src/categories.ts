@@ -14,3 +14,10 @@ export const CATEGORY_LABELS = {
 		bajas: 'Casualties',
 	},
 } as const;
+
+export type CategorySlug = (typeof CATEGORY_SLUGS)[number];
+
+export const CATEGORY_URL_SLUGS = {
+	es: { operativos: 'operativos', incautaciones: 'incautaciones', sometimientos: 'sometimientos', bajas: 'bajas' },
+	en: { operativos: 'operations', incautaciones: 'seizures', sometimientos: 'surrenders', bajas: 'casualties' },
+} as const;

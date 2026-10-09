@@ -6,26 +6,26 @@ import Footer from '../../../components/Footer.astro';
 import FormattedDate from '../../../components/FormattedDate.astro';
 import Header from '../../../components/Header.astro';
 import { SITE_TITLE } from '../../../consts';
-import { CATEGORY_SLUGS, CATEGORY_LABELS } from '../../../categories';
+import { CATEGORY_SLUGS, CATEGORY_LABELS, CATEGORY_URL_SLUGS } from '../../../categories';
 import { postPath } from '../../../i18n/routes';
 
 export async function getStaticPaths() {
-	return CATEGORY_SLUGS.map((category) => ({ params: { category } }));
+	return CATEGORY_SLUGS.map((key) => ({ params: { category: CATEGORY_URL_SLUGS.en[key] }, props: { key } }));
 }
 
-const { category } = Astro.params;
-const allPosts = await getCollection('blog', ({ id }) => id.startsWith('es/'));
+const { key } = Astro.props;
+const allPosts = await getCollection('blog', ({ id }) => id.startsWith('en/'));
 const posts = allPosts
-	.filter((post) => post.data.category === category)
+	.filter((post) => post.data.category === key)
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const label = CATEGORY_LABELS.es[category as (typeof CATEGORY_SLUGS)[number]] ?? category;
+const label = CATEGORY_LABELS.en[key];
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="en">
 	<head>
-		<BaseHead title={`${label} — ${SITE_TITLE}`} description={`Notas de la categoría ${label} en ${SITE_TITLE}.`} />
+		<BaseHead title={`${label} — ${SITE_TITLE}`} description={`Reports in the ${label} category on ${SITE_TITLE}.`} />
 		<style>
 			main {
 				width: 960px;
@@ -76,12 +76,12 @@ const label = CATEGORY_LABELS.es[category as (typeof CATEGORY_SLUGS)[number]] ??
 		<Header />
 		<main>
 			<h1>{label}</h1>
-			{posts.length === 0 && <p class="empty">Todavía no hay notas en esta categoría.</p>}
+			{posts.length === 0 && <p class="empty">No reports in this category yet.</p>}
 			<ul>
 				{
 					posts.map((post) => (
 						<li>
-																													<a href={postPath('es', post)}>
+																													<a href={postPath('en', post)}>
 								{post.data.heroImage && (
 									<Image width={720} height={360} src={post.data.heroImage} alt="" />
 								)}
