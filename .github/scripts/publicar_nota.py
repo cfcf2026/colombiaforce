@@ -11,6 +11,8 @@ BLOG = pathlib.Path('src/content/blog')
 SITE = 'https://colombiaforce.com'
 CATS = ('operativos', 'incautaciones', 'sometimientos', 'bajas')
 SLUG_RE = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
+URL_RE = re.compile(r'^https://[^\s/]+\.[^\s/]+/\S*$|^https://[^\s/]+\.[^\s/]+$')
+PLANTILLA_ARCHIVO, PLANTILLA_SLUG = 'nombre-en-espanol-sin-tildes', 'english-url-slug'
 
 errors, warnings = [], []
 
@@ -100,8 +102,10 @@ try:
             errors.append('`%s` debe tener solo minúsculas, números y guiones (ej: `mi-nota`).' % label)
     if cat not in CATS:
         errors.append('`CATEGORIA` debe ser una de: %s.' % ', '.join(CATS))
-    if not url.startswith('https://'):
-        errors.append('`FUENTE_URL` debe empezar por `https://`.')
+    if not URL_RE.match(url):
+        errors.append('`FUENTE_URL` debe ser el enlace completo de la fuente (ej: `https://www.presidencia.gov.co/...`).')
+    if archivo == PLANTILLA_ARCHIVO or slug_en == PLANTILLA_SLUG:
+        errors.append('`ARCHIVO` o `SLUG_EN` siguen con el valor de ejemplo de la plantilla. ¿Pegaste tu paquete encima del texto de ejemplo?')
 
     date = None
     try:
