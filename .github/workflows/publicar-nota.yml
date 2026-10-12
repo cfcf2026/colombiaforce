@@ -1,0 +1,51 @@
+name: Publicar nota desde issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: publicar-nota
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    if: github.event.issue.user.login == github.repository_owner && startsWith(github.event.issue.title, 'NOTA')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preparar herramientas de imagen
+        run: |
+          pip install pillow
+          sudo apt-get install -y fonts-dejavu-core
+
+      - name: Validar y crear las notas
+        id: nota
+        run: python3 .github/scripts/publicar_nota.py
+
+      - name: Guardar y subir
+        if: steps.nota.outputs.ok == 'true'
+        run: |
+          git config user.name "ColombiaForce"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/blog public/images
+          git commit -m "Nota publicada desde el issue #${{ github.event.issue.number }}"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Avisar si falló el envío
+        if: failure() && steps.nota.outputs.ok == 'true'
+        run: echo "❌ Las notas se validaron, pero falló el envío a GitHub. Revisa la pestaña Actions y vuelve a intentarlo con un issue nuevo." > comment.md
+
+      - name: Responder en el issue
+        if: always() && steps.nota.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body-file comment.md
+          gh issue close ${{ github.event.issue.number }}
