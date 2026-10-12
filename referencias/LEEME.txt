@@ -1,0 +1,2 @@
+Fotos de referencia para las portadas. Esta carpeta NO se publica en el sitio.
+Sube aqui la foto y usa FOTO: referencias/nombre.jpg en el paquete de la nota.
