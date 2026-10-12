@@ -46,12 +46,13 @@ const copy = {
 	},
 }[lang];
 
-const catSlugs = ['operativos', 'incautaciones', 'sometimientos', 'bajas'];
+const catSlugs = ['operativos', 'incautaciones', 'capturados', 'bajas', 'otros'];
 const catLabel: Record<string, string> = {
 	operativos: t('cat.operativos'),
 	incautaciones: t('cat.incautaciones'),
-	sometimientos: t('cat.sometimientos'),
+	capturados: t('cat.capturados'),
 	bajas: t('cat.bajas'),
+	otros: t('cat.otros'),
 };
 
 const prefix = `${lang}/`;
@@ -62,7 +63,7 @@ const featured = posts[0];
 const postHref = (p: (typeof posts)[number]) => postPath(lang, p);
 const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string] ?? '';
 
-const nationalStats = { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
+const nationalStats = { operativos: 0, incautaciones: 0, capturados: 0, bajas: 0, otros: 0 };
 for (const p of posts) nationalStats[p.data.category] += 1;
 const nationalTotal = Object.values(nationalStats).reduce((a, b) => a + b, 0);
 const mapCopy =
@@ -74,7 +75,7 @@ const nationalSubtitle = `${mapCopy.sub} · ${nationalTotal} ${nationalTotal ===
 const mapStats: Record<string, Record<string, number>> = {};
 for (const p of posts) {
 	for (const d of p.data.departments ?? []) {
-		mapStats[d] ??= { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
+		mapStats[d] ??= { operativos: 0, incautaciones: 0, capturados: 0, bajas: 0, otros: 0 };
 		mapStats[d][p.data.category] += 1;
 	}
 }
@@ -115,8 +116,9 @@ for (const p of posts) {
 						<p id="map-panel-sub" class="sub">{nationalSubtitle}</p>
 						<div class="stat-row"><span>{catLabel.operativos}</span><b id="stat-operativos">{nationalStats.operativos}</b></div>
 						<div class="stat-row"><span>{catLabel.incautaciones}</span><b id="stat-incautaciones">{nationalStats.incautaciones}</b></div>
-						<div class="stat-row"><span>{catLabel.sometimientos}</span><b id="stat-sometimientos">{nationalStats.sometimientos}</b></div>
+						<div class="stat-row"><span>{catLabel.capturados}</span><b id="stat-capturados">{nationalStats.capturados}</b></div>
 						<div class="stat-row"><span>{catLabel.bajas}</span><b id="stat-bajas">{nationalStats.bajas}</b></div>
+						<div class="stat-row"><span>{catLabel.otros}</span><b id="stat-otros">{nationalStats.otros}</b></div>
 						<button id="map-reset" class="map-reset" type="button" hidden>{mapCopy.reset}</button>
 						<div class="legend" aria-hidden="true"><span>{lang === 'es' ? 'Menos notas' : 'Fewer reports'}</span><i></i><span>{lang === 'es' ? 'Más notas' : 'More reports'}</span></div>
 						<p class="hint">{mapCopy.tap} {copy.hint}</p>
@@ -156,9 +158,9 @@ for (const p of posts) {
 		<script>
 	declare const L: any;
 
-	type Stats = { operativos: number; incautaciones: number; sometimientos: number; bajas: number };
-	const KEYS = ['operativos', 'incautaciones', 'sometimientos', 'bajas'] as const;
-	const EMPTY: Stats = { operativos: 0, incautaciones: 0, sometimientos: 0, bajas: 0 };
+	type Stats = { operativos: number; incautaciones: number; capturados: number; bajas: number; otros: number };
+	const KEYS = ['operativos', 'incautaciones', 'capturados', 'bajas', 'otros'] as const;
+	const EMPTY: Stats = { operativos: 0, incautaciones: 0, capturados: 0, bajas: 0, otros: 0 };
 
 	document.addEventListener('DOMContentLoaded', async () => {
 		const mapEl = document.getElementById('colombia-map');

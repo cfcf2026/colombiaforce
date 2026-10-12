@@ -23,8 +23,9 @@ const otherPath = alt.paired ? alt[otherLang] : `/${otherLang}/`;
 			<HeaderLink href={`/${lang}/about`}>{t('nav.about')}</HeaderLink>
 			<HeaderLink href={categoryPath(lang, 'operativos')}>{t('cat.operativos')}</HeaderLink>
 			<HeaderLink href={categoryPath(lang, 'incautaciones')}>{t('cat.incautaciones')}</HeaderLink>
-			<HeaderLink href={categoryPath(lang, 'sometimientos')}>{t('cat.sometimientos')}</HeaderLink>
+			<HeaderLink href={categoryPath(lang, 'capturados')}>{t('cat.capturados')}</HeaderLink>
 			<HeaderLink href={categoryPath(lang, 'bajas')}>{t('cat.bajas')}</HeaderLink>
+			<HeaderLink href={categoryPath(lang, 'otros')}>{t('cat.otros')}</HeaderLink>
 			<a class="lang" href={otherPath}>{otherLang.toUpperCase()}</a>
 		</nav>
 	</div>

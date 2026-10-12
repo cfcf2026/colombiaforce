@@ -12,8 +12,9 @@ export const ui = {
 		'nav.about': 'Nosotros',
 		'cat.operativos': 'Operativos',
 		'cat.incautaciones': 'Incautaciones',
-		'cat.sometimientos': 'Sometimientos',
+		'cat.capturados': 'Capturados',
 		'cat.bajas': 'Bajas',
+		'cat.otros': 'Otros',
 	},
 	en: {
 		'nav.home': 'Home',
@@ -21,8 +22,9 @@ export const ui = {
 		'nav.about': 'About',
 		'cat.operativos': 'Operations',
 		'cat.incautaciones': 'Seizures',
-		'cat.sometimientos': 'Surrenders',
+		'cat.capturados': 'Arrests',
 		'cat.bajas': 'Casualties',
+		'cat.otros': 'Other',
 	},
 } as const;
 

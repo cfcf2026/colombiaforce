@@ -26,7 +26,7 @@ collections:
       - { name: description, label: Descripción, widget: text, i18n: true }
       - { name: pubDate, label: Fecha, widget: datetime, i18n: duplicate }
       - { name: category, label: Categoría, widget: select, i18n: duplicate,
-          options: [operativos, incautaciones, sometimientos, bajas] }
+          options: [{ label: Operativos, value: operativos }, { label: Incautaciones, value: incautaciones }, { label: Capturados, value: capturados }, { label: Bajas, value: bajas }, { label: Otros, value: otros }] }
       - { name: heroImage, label: Imagen principal, widget: image, required: false, i18n: true }
       - { name: imageAlt, label: Descripción de la imagen, widget: string, required: false, i18n: true }
       - name: departments
