@@ -5,6 +5,12 @@ pubDate: 2026-10-12
 category: otros
 heroImage: "/images/balance-dos-meses-gobierno-de-la-espriella-es.jpg"
 imageAlt: "Portada: Balance de DOS MESES"
+stats:
+  operativos: 18
+  incautaciones: 200982
+  capturados: 32503
+  bajas: 70
+  otros: 3733
 ---
 
 El presidente Abelardo De La Espriella entregó, en alocución presidencial, un balance de seguridad correspondiente a sus primeros dos meses de Gobierno, desde su posesión el 7 de agosto de 2026.

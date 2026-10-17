@@ -6,6 +6,12 @@ category: otros
 heroImage: "/images/balance-dos-meses-gobierno-de-la-espriella-en.jpg"
 imageAlt: "Cover: TWO MONTHS Balance"
 urlSlug: "two-month-security-balance-de-la-espriella"
+stats:
+  operativos: 18
+  incautaciones: 200982
+  capturados: 32503
+  bajas: 70
+  otros: 3733
 ---
 
 President Abelardo De La Espriella delivered a presidential address presenting a security balance for his first two months in office, since taking office on August 7, 2026.
