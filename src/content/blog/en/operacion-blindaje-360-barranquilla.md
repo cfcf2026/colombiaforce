@@ -1,12 +1,13 @@
 ---
-title: "Operation Armor 360 leaves 72 arrested in Barranquilla and its metropolitan area"
-description: "The government reported 72 arrests, 50 raids and the seizure of 17 firearms, one grenade and more than 6 kilos of narcotics in Barranquilla."
+title: Operation Armor 360 leaves 72 arrested in Barranquilla and its metropolitan area
+description: The government reported 72 arrests, 50 raids and the seizure of 17 firearms, one grenade and more than 6 kilos of narcotics in Barranquilla.
 pubDate: 2026-10-16
 category: capturados
-departments: ["ATLANTICO"]
-heroImage: "/images/operacion-blindaje-360-barranquilla-en.jpg"
-imageAlt: "Cover: Strike on BARRANQUILLA"
-urlSlug: "operation-armor-360-barranquilla"
+heroImage: /images/operacion-blindaje-360-barranquilla-en.jpg
+imageAlt: 'Cover: Strike on BARRANQUILLA'
+departments:
+  - ATLANTICO
+urlSlug: operation-armor-360-barranquilla
 ---
 
 The national government reported the results of Operation Armor 360, "No Mercy for Crime," carried out in Barranquilla and its metropolitan area, according to President Abelardo De La Espriella.
