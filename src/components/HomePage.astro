@@ -64,7 +64,15 @@ const postHref = (p: (typeof posts)[number]) => postPath(lang, p);
 const label = (p: (typeof posts)[number]) => catLabel[p.data.category as string] ?? '';
 
 const nationalStats = { operativos: 0, incautaciones: 0, capturados: 0, bajas: 0, otros: 0 };
-for (const p of posts) nationalStats[p.data.category] += 1;
+for (const p of posts) {
+	if (p.data.stats) {
+		for (const k of Object.keys(nationalStats) as (keyof typeof nationalStats)[]) {
+			nationalStats[k] += p.data.stats[k] ?? 0;
+		}
+	} else {
+		nationalStats[p.data.category] += 1;
+	}
+}
 const nationalTotal = Object.values(nationalStats).reduce((a, b) => a + b, 0);
 const mapCopy =
 	lang === 'es'
@@ -76,7 +84,13 @@ const mapStats: Record<string, Record<string, number>> = {};
 for (const p of posts) {
 	for (const d of p.data.departments ?? []) {
 		mapStats[d] ??= { operativos: 0, incautaciones: 0, capturados: 0, bajas: 0, otros: 0 };
-		mapStats[d][p.data.category] += 1;
+		if (p.data.stats) {
+			for (const k of Object.keys(mapStats[d]) as (keyof typeof mapStats)[string][]) {
+				mapStats[d][k] += p.data.stats[k] ?? 0;
+			}
+		} else {
+			mapStats[d][p.data.category] += 1;
+		}
 	}
 }
 ---

@@ -14,6 +14,13 @@ const blog = defineCollection({
 		departments: z.array(z.string()).default([]),
 		urlSlug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
 		category: z.enum(['operativos', 'incautaciones', 'capturados', 'bajas', 'otros']),
+		stats: z.object({
+			operativos: z.number().default(0),
+			incautaciones: z.number().default(0),
+			capturados: z.number().default(0),
+			bajas: z.number().default(0),
+			otros: z.number().default(0),
+		}).optional(),
 	}),
 });
 
