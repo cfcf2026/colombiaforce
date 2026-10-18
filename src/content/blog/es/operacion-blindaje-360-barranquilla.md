@@ -1,15 +1,4 @@
 ---
-title: Operación Blindaje 360 deja 72 capturados en Barranquilla y su área metropolitana
-description: El Gobierno reportó 72 capturas, 50 allanamientos y la incautación de 17 armas de fuego, una granada y más de 6 kilos de narcóticos en Barranquilla.
-pubDate: 2026-10-16
-category: capturados
-heroImage: /images/operacion-blindaje-360-barranquilla-es.jpg
-imageAlt: 'Portada: Golpe en BARRANQUILLA'
-departments:
-  - ATLANTICO
-urlSlug: ''
----
-
 El Gobierno nacional reportó los resultados de la Operación Blindaje 360, "Sin tregua al delito", ejecutada en Barranquilla y su área metropolitana, según informó el presidente Abelardo De La Espriella.
 
 ## Resultados del operativo
