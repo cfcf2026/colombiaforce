@@ -22,8 +22,6 @@ En el mar Caribe, a 129 millas náuticas al oeste de Cartagena, la Armada Nacion
 
 *Las cifras y afirmaciones son las reportadas por fuentes oficiales y no han sido verificadas de forma independiente. Las personas capturadas se consideran presuntas responsables hasta que un juez decida lo contrario.*
 
-*Las cifras y afirmaciones son las reportadas por las fuentes oficiales y no han sido verificadas de forma independiente. Las personas capturadas o señaladas se consideran presuntas responsables hasta que un juez decida lo contrario.*
-
 **Fuente:** [Cuenta oficial del presidente Abelardo De La Espriella](https://x.com/ABDELAESPRIELLA/status/2111568922302390508).
 
 **Imagen:** Cuenta oficial del presidente Abelardo De La Espriella.
