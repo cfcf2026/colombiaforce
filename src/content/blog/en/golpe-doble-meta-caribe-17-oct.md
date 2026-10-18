@@ -23,8 +23,6 @@ In the Caribbean Sea, 129 nautical miles west of Cartagena, the Navy, with suppo
 
 *Figures and statements are those reported by official sources and have not been independently verified. Arrested individuals are presumed innocent until a judge rules otherwise.*
 
-*Figures and claims are those reported by official sources and have not been independently verified. People who have been arrested or named are presumed innocent until a judge rules otherwise.*
-
 **Source:** [President Abelardo De La Espriella's official account](https://x.com/ABDELAESPRIELLA/status/2111568922302390508).
 
 **Image:** Cuenta oficial del presidente Abelardo De La Espriella.
