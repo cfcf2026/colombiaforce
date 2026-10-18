@@ -10,21 +10,21 @@ departments:
 urlSlug: operation-armor-360-barranquilla
 ---
 
-The national government reported the results of Operation Armor 360, "No Mercy for Crime," carried out in Barranquilla and its metropolitan area, according to President Abelardo De La Espriella.
-Results of the operation
+The national government reported the results of "Operation Shield 360" ("Operación Blindaje 360")—themed "No Respite for Crime"—carried out in Barranquilla and its metropolitan area, as announced by President Abelardo De La Espriella.
 
-    Arrests: 72 people.
-    Raids: 50 conducted.
-    Weapons seized: 17 firearms and one grenade.
-    Narcotics: more than 6 kilos taken off the streets.
+## Operation Results
 
-Among those arrested are alleged leaders and members of criminal structures including Los Costeños, Los del Freseo, Los Porteños, Los Rápidos and the Clan del Golfo. According to the president, the operation struck these organizations' finances, their extortion networks, microtrafficking, and the structures accused of spreading fear among citizens.
-Recognition for security forces
+- **Arrests:** 72 individuals.
+- **Analyses/Investigations:** 50 conducted.
+- **Weapons Seized:** 17 firearms and one grenade.
+- **Narcotics:** More than 6 kilograms removed from circulation.
 
-The president highlighted the coordinated work of the National Police, the Military Forces and the Attorney General's Office, and said the government will not rest until peace is restored to every neighborhood in Barranquilla.
+Those arrested include alleged ringleaders and members of criminal organizations such as Los Costeños, Los del Freseo, Los Porteños, Los Rápidos, and the Clan del Golfo. According to the president, the operation targeted the finances of these organizations, their extortion networks, small-scale drug trafficking, and the groups accused of instilling fear among the public.
 
-*Figures and claims are those reported by official sources and have not been independently verified. People who have been arrested or named are presumed innocent until a judge rules otherwise.*
+## Recognition of Security Forces
 
-**Source:** [President Abelardo De La Espriella's official account](https://www.facebook.com/reel/1079609978170591?locale=es_LA).
+The president highlighted the coordinated efforts of the National Police, the Military Forces, and the Office of the Attorney General, stating that the government will not rest until tranquility is restored to the neighborhoods of Barranquilla.
 
-**Image:** Abelardo De La Espriella's media.
+*The figures and statements provided are those reported by official sources and have not been independently verified. Individuals who have been arrested or implicated are considered presumed responsible until a judge rules otherwise.*
+
+**Source:** [Official account of President Abelardo De La Espriella](https://www.facebook.com/reel/1079609978170591?locale=es_LA).
