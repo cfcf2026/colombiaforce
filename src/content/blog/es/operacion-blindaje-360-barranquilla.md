@@ -7,7 +7,6 @@ heroImage: /images/operacion-blindaje-360-barranquilla-es.jpg
 imageAlt: 'Portada: Golpe en BARRANQUILLA'
 departments:
   - ATLANTICO
-urlSlug: ''
 ---
 
 El Gobierno nacional reportó los resultados de la Operación Blindaje 360, "Sin tregua al delito", ejecutada en Barranquilla y su área metropolitana, según informó el presidente Abelardo De La Espriella.
