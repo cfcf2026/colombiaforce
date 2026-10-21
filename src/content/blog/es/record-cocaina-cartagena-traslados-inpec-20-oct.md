@@ -1,11 +1,17 @@
 ---
-title: "Cartagena: incautan 7,6 toneladas de cocaína, la mayor en el puerto en 10 años"
-description: "La Policía halló el cargamento, con destino a los Países Bajos, escondido en panela pulverizada. En paralelo, el INPEC trasladó a 91 reclusos en la tercera gran oleada penitenciaria desde agosto."
+title: 'Cartagena: incautan 7,6 toneladas de cocaína, la mayor en el puerto en 10 años'
+description: La Policía halló el cargamento, con destino a los Países Bajos, escondido en panela pulverizada. En paralelo, el INPEC trasladó a 91 reclusos en la tercera gran oleada penitenciaria desde agosto.
 pubDate: 2026-10-20
 category: incautaciones
-departments: ["BOLIVAR", "CORDOBA", "SUCRE", "ATLANTICO", "SANTANDER"]
-heroImage: "/images/record-cocaina-cartagena-traslados-inpec-20-oct-es.jpg"
-imageAlt: "Portada: Récord en CARTAGENA"
+heroImage: /images/record-cocaina-cartagena-traslados-inpec-20-oct-es.jpg
+imageAlt: 'Portada: Récord en CARTAGENA'
+departments:
+  - BOLIVAR
+  - CORDOBA
+  - SUCRE
+  - ATLANTICO
+  - SANTANDER
+urlSlug: ''
 ---
 
 La Policía Nacional incautó 7,6 toneladas de cocaína en el puerto de Cartagena, la mayor incautación registrada en esa terminal en los últimos diez años, según confirmó el presidente Abelardo De La Espriella. El cargamento tenía como destino los Países Bajos.
@@ -36,10 +42,8 @@ No es la primera vez: el propio día de su posesión, el 7 de agosto, el Gobiern
 
 En Girón, Santander —uno de los destinos frecuentes de estos traslados—, el INPEC, en coordinación con el GAULA de la Policía Nacional, incautó dentro de un establecimiento penitenciario una tarjeta SIM, 5,58 gramos de una sustancia vegetal, una batería y un cable de datos, elementos típicamente usados para coordinar actividades criminales desde dentro de las cárceles.
 
-*Las cifras y afirmaciones son las reportadas por fuentes oficiales y no han sido verificadas de forma independiente. Las personas mencionadas se consideran presuntas responsables hasta que un juez decida lo contrario.*
-
-*Las cifras y afirmaciones son las reportadas por las fuentes oficiales y no han sido verificadas de forma independiente. Las personas capturadas o señaladas se consideran presuntas responsables hasta que un juez decida lo contrario.*
+_Las cifras y afirmaciones son las reportadas por fuentes oficiales y no han sido verificadas de forma independiente. Las personas mencionadas se consideran presuntas responsables hasta que un juez decida lo contrario._
 
 **Fuente:** [Cuenta oficial del presidente Abelardo De La Espriella](https://www.elespectador.com/judicial/de-la-espriella-anuncia-la-mayor-incautacion-de-cocaina-en-cartagena-en-los-ultimos-10-anos/).
 
-**Imagen:** Policía Nacional.
+**Imagen:** Policía Nacional, INPEC.

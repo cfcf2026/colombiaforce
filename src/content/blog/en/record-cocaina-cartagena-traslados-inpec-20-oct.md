@@ -1,12 +1,17 @@
 ---
-title: "Cartagena: 7.6 tons of cocaine seized, the largest at the port in 10 years"
-description: "Police found the shipment, bound for the Netherlands, hidden in powdered raw cane sugar. Separately, Colombia's prison agency transferred 91 inmates in the third major wave since August."
+title: 'Cartagena: 7.6 tons of cocaine seized, the largest at the port in 10 years'
+description: Police found the shipment, bound for the Netherlands, hidden in powdered raw cane sugar. Separately, Colombia's prison agency transferred 91 inmates in the third major wave since August.
 pubDate: 2026-10-20
 category: incautaciones
-departments: ["BOLIVAR", "CORDOBA", "SUCRE", "ATLANTICO", "SANTANDER"]
-heroImage: "/images/record-cocaina-cartagena-traslados-inpec-20-oct-en.jpg"
-imageAlt: "Cover: Record in CARTAGENA"
-urlSlug: "cartagena-cocaine-record-inpec-transfers-oct-20"
+heroImage: /images/record-cocaina-cartagena-traslados-inpec-20-oct-en.jpg
+imageAlt: 'Cover: Record in CARTAGENA'
+departments:
+  - BOLIVAR
+  - CORDOBA
+  - SUCRE
+  - ATLANTICO
+  - SANTANDER
+urlSlug: cartagena-cocaine-record-inpec-transfers-oct-20
 ---
 
 Colombia's National Police seized 7.6 tons of cocaine at the port of Cartagena, the largest seizure recorded at that terminal in the last decade, President Abelardo De La Espriella confirmed. The shipment was bound for the Netherlands.
@@ -37,10 +42,8 @@ This isn't the first such wave: on his very first day in office, August 7, the g
 
 In Girón, Santander — one of the frequent destinations for these transfers — INPEC, working with the National Police's GAULA unit, seized a SIM card, 5.58 grams of a plant substance, a battery and a data cable inside a prison facility — items typically used to coordinate criminal activity from behind bars.
 
-*Figures and statements are those reported by official sources and have not been independently verified. Individuals named are presumed innocent until a judge rules otherwise.*
-
-*Figures and claims are those reported by official sources and have not been independently verified. People who have been arrested or named are presumed innocent until a judge rules otherwise.*
+_Figures and statements are those reported by official sources and have not been independently verified. Individuals named are presumed innocent until a judge rules otherwise._
 
 **Source:** [President Abelardo De La Espriella's official account](https://www.elespectador.com/judicial/de-la-espriella-anuncia-la-mayor-incautacion-de-cocaina-en-cartagena-en-los-ultimos-10-anos/).
 
-**Image:** Policía Nacional.
+**Image:** National Police, INPEC.
