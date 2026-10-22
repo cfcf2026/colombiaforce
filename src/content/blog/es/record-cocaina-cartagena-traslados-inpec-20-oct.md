@@ -11,7 +11,7 @@ departments:
   - SUCRE
   - ATLANTICO
   - SANTANDER
-urlSlug: ''
+urlSlug: record-cocaina-cartagena-traslados-inpec-20-oct
 ---
 
 La Policía Nacional incautó 7,6 toneladas de cocaína en el puerto de Cartagena, la mayor incautación registrada en esa terminal en los últimos diez años, según confirmó el presidente Abelardo De La Espriella. El cargamento tenía como destino los Países Bajos.
