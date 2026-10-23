@@ -1,12 +1,13 @@
 ---
-title: "Airstrike in El Tambo, Cauca: 9 ELN members killed, including alias \"Marcos Pacífico\""
-description: "President De La Espriella reported the results of the air operation. The identity of the alleged commander is pending fingerprint confirmation."
+title: 'Airstrike in El Tambo, Cauca: 9 ELN members killed, including alias "Marcos Pacífico"'
+description: President De La Espriella reported the results of the air operation. The identity of the alleged commander is pending fingerprint confirmation.
 pubDate: 2026-10-22
 category: bajas
-departments: ["CAUCA"]
-heroImage: "/images/bombardeo-eln-cauca-autorizado-presidente-en.jpg"
-imageAlt: "Cover: Operation in EL TAMBO"
-urlSlug: "eln-airstrike-cauca-authorized-president"
+heroImage: /images/bombardeo-eln-cauca-autorizado-presidente-en.jpg
+imageAlt: 'Cover: Operation in EL TAMBO'
+departments:
+  - CAUCA
+urlSlug: eln-airstrike-cauca-authorized-president
 ---
 
 **UPDATED with the results reported by the government.**

@@ -1,11 +1,13 @@
 ---
-title: "Bombardeo en El Tambo, Cauca: 9 integrantes del ELN dados de baja, entre ellos alias «Marcos Pacífico»"
-description: "El presidente De La Espriella informó los resultados de la operación aérea. La identidad del presunto cabecilla está pendiente de confirmación decadactilar."
+title: 'Bombardeo en El Tambo, Cauca: 9 integrantes del ELN dados de baja, entre ellos alias «Marcos Pacífico»'
+description: El presidente De La Espriella informó los resultados de la operación aérea. La identidad del presunto cabecilla está pendiente de confirmación decadactilar.
 pubDate: 2026-10-22
 category: bajas
-departments: ["CAUCA"]
-heroImage: "/images/bombardeo-eln-cauca-autorizado-presidente-es.jpg"
-imageAlt: "Portada: Operación en EL TAMBO"
+heroImage: /images/bombardeo-eln-cauca-autorizado-presidente-es.jpg
+imageAlt: 'Portada: Bombardeo en TAMBO'
+departments:
+  - CAUCA
+urlSlug: ''
 ---
 
 **ACTUALIZADO con los resultados informados por el Gobierno.**
